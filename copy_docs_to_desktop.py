@@ -30,12 +30,13 @@ def get_desktop_path():
         desktop = home / "Desktop"
     elif system == "Linux":
         # Try common Linux desktop locations
-        desktop = home / "Desktop"
-        if not desktop.exists():
-            # Some Linux distributions use localized names
-            desktop = home / "Escritorio"  # Spanish
-        if not desktop.exists():
-            desktop = home / "Bureau"  # French
+        possible_desktops = [
+            home / "Desktop",
+            home / "Escritorio",  # Spanish
+            home / "Bureau",       # French
+        ]
+        # Use the first one that exists, or default to Desktop
+        desktop = next((d for d in possible_desktops if d.exists()), home / "Desktop")
     else:
         desktop = home / "Desktop"
     
